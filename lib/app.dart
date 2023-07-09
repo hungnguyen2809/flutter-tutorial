@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
   + private class dùng để vẽ giao diện qua hàm build
 */
 
+// ignore: must_be_immutable
 class MyApp extends StatefulWidget {
   String name;
   int age;

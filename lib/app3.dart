@@ -16,6 +16,12 @@ class MyApp3 extends StatefulWidget {
 }
 
 class _MyApp3 extends State<MyApp3> with WidgetsBindingObserver {
+  final _contentControler = TextEditingController();
+  final _amountControler = TextEditingController();
+
+  String _content = '';
+  String _amount = '';
+
   @override
   void initState() {
     super.initState();
@@ -25,6 +31,8 @@ class _MyApp3 extends State<MyApp3> with WidgetsBindingObserver {
   @override
   void dispose() {
     super.dispose();
+    _contentControler.dispose();
+    _amountControler.dispose();
     WidgetsBinding.instance.removeObserver(this); // remove observer
   }
 
@@ -37,20 +45,44 @@ class _MyApp3 extends State<MyApp3> with WidgetsBindingObserver {
           appBar: AppBar(
             title: const Text('My App'),
           ),
-          body: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              const TextField(
-                decoration: InputDecoration(labelText: 'Content'),
-              ),
-              const TextField(
-                decoration: InputDecoration(labelText: 'Amount(money)'),
-              ),
-              FloatingActionButton(
-                onPressed: () {},
-                child: const Text('Insert transaction'),
-              ),
-            ],
+          body: SafeArea(
+            // minimum: const EdgeInsets.all(16.0),
+            // minimum: const EdgeInsets.symmetric(horizontal: 16.0),
+            // minimum: const EdgeInsets.only(left: 16.0),
+            // minimum: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 16.0),
+            // minimum: const EdgeInsets.only(
+            //     left: 16.0, top: 16.0, right: 16.0, bottom: 16.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                TextField(
+                  controller: _contentControler,
+                  onChanged: (text) {
+                    setState(() {
+                      _content = text;
+                    });
+                  },
+                  decoration: const InputDecoration(labelText: 'Content'),
+                ),
+                TextField(
+                  controller: _amountControler,
+                  onChanged: (text) {
+                    setState(() {
+                      _amount = text;
+                    });
+                  },
+                  decoration: const InputDecoration(labelText: 'Amount(money)'),
+                ),
+                TextButton(
+                  onPressed: () {},
+                  style: TextButton.styleFrom(
+                    foregroundColor: Colors.white,
+                    backgroundColor: Colors.blue,
+                  ),
+                  child: const Text('Insert Transaction'),
+                )
+              ],
+            ),
           )),
     );
   }

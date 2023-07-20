@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_app/model/transaction.dart';
 
 /*
   Stateful Widget đc tạo thành từ 2 class:
@@ -16,11 +17,13 @@ class MyApp3 extends StatefulWidget {
 }
 
 class _MyApp3 extends State<MyApp3> with WidgetsBindingObserver {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final _contentControler = TextEditingController();
   final _amountControler = TextEditingController();
 
   String _content = '';
-  String _amount = '';
+  double _amount = 0;
+  final List<Transaction> _transactions = [];
 
   @override
   void initState() {
@@ -42,6 +45,7 @@ class _MyApp3 extends State<MyApp3> with WidgetsBindingObserver {
       title: 'My App',
       theme: ThemeData(useMaterial3: true),
       home: Scaffold(
+          key: _scaffoldKey,
           appBar: AppBar(
             title: const Text('My App'),
           ),
@@ -68,13 +72,36 @@ class _MyApp3 extends State<MyApp3> with WidgetsBindingObserver {
                   controller: _amountControler,
                   onChanged: (text) {
                     setState(() {
-                      _amount = text;
+                      _amount = double.tryParse(text) ?? 0;
                     });
                   },
                   decoration: const InputDecoration(labelText: 'Amount(money)'),
                 ),
                 TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    // print(_content);
+                    // print(_amount);
+
+                    // _scaffoldKey.currentState!.showSnackBar(SnackBar(
+                    //   content: Text(
+                    //       'Insert Transaction Successfully: $_content - $_amount'),
+                    //   duration: const Duration(seconds: 1),
+                    // ));
+
+                    setState(() {
+                      _transactions
+                          .add(Transaction(content: _content, amount: _amount));
+
+                      _contentControler.clear();
+                      _amountControler.clear();
+                    });
+
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: Text(
+                          'Insert Transaction Successfully: $_content - $_amount'),
+                      duration: const Duration(seconds: 1),
+                    ));
+                  },
                   style: TextButton.styleFrom(
                     foregroundColor: Colors.white,
                     backgroundColor: Colors.blue,
